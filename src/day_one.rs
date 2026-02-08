@@ -8,18 +8,16 @@ pub fn get_password() {
     let mut number_of_zeroes = 0;
     for movement in lock_movements {
         println!("applying {}", movement);
-        lock.apply_movement(&movement);
+        lock.apply_movement(&movement, &mut number_of_zeroes);
         println!("results in {}", lock.state);
-        if lock.state == 0 {
-            number_of_zeroes +=1;
-        }
     }
     println!("password = {}", number_of_zeroes);
 }
 
 fn get_lock_movements() -> Vec<LockMovement> {
     let lines_result = read_file();
-
+    let a = [1..10];
+    let b = 1..10;
     let mut lock_movements = Vec::new();
     if let Ok(result) = lines_result {
         for line in result {
@@ -36,7 +34,7 @@ fn create_lock_movement(line: &str) -> LockMovement {
         'R' => Direction::Right,
         _ => panic!("Invalid directional character"),
     };
-    let amount: u8 = (line[1..].parse::<u32>().unwrap() % 100) as u8;
+    let amount: u32 = line[1..].parse::<u32>().unwrap();
     LockMovement { direction, amount }
 }
 
@@ -64,7 +62,7 @@ impl Display for Direction {
 #[derive(Debug)]
 struct LockMovement {
     direction: Direction,
-    amount: u8,
+    amount: u32,
 }
 
 impl Display for LockMovement {
@@ -83,17 +81,32 @@ impl Lock {
         Lock { state: 50 }
     }
 
-    fn apply_movement(&mut self, movement: &LockMovement) {
+    fn apply_movement(&mut self, movement: &LockMovement,  number_of_zeroes: &mut i32 ) {
         match movement.direction {
-            Direction::Left => {
-                if movement.amount > self.state {
-                    self.state = (100 - movement.amount + self.state) % 100
-                } else {
-                    self.state = (self.state - movement.amount) % 100
-                }
-            }
+            Direction::Left => for _ in 0..movement.amount {
+                self.decrease_one(number_of_zeroes)
+            },
+            Direction::Right => for _ in 0 .. movement.amount {
+                self.increase_one(number_of_zeroes)
+            },
+        }
+    }
 
-            Direction::Right => self.state = (self.state + movement.amount) % 100,
+    fn increase_one(&mut self, number_of_zeroes: &mut i32) {
+        self.state = (self.state + 1) % 100;
+        if self.state == 0 {
+            *number_of_zeroes += 1;
+        }
+    }
+
+    fn decrease_one(&mut self, number_of_zeroes: &mut i32) {
+        match self.state {
+            0 => self.state = 99,
+            1 => {
+                self.state = 0;
+                *number_of_zeroes += 1;
+            }
+            _ => self.state -= 1,
         }
     }
 }
