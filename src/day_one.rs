@@ -7,17 +7,15 @@ pub fn get_password() {
     let mut lock = Lock::new();
     let mut number_of_zeroes = 0;
     for movement in lock_movements {
-        println!("applying {}", movement);
+        // println!("applying {}", movement);
         lock.apply_movement(&movement, &mut number_of_zeroes);
-        println!("results in {}", lock.state);
+        // println!("results in {}", lock.state);
     }
     println!("password = {}", number_of_zeroes);
 }
 
 fn get_lock_movements() -> Vec<LockMovement> {
     let lines_result = read_file();
-    let a = [1..10];
-    let b = 1..10;
     let mut lock_movements = Vec::new();
     if let Ok(result) = lines_result {
         for line in result {
