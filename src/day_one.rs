@@ -1,6 +1,5 @@
 use std::fmt::{Display, Formatter};
-use std::fs::File;
-use std::io::{BufRead, BufReader};
+use crate::common::read_file_multiple_lines;
 
 pub fn get_password() {
     let lock_movements: Vec<LockMovement> = get_lock_movements();
@@ -15,7 +14,7 @@ pub fn get_password() {
 }
 
 fn get_lock_movements() -> Vec<LockMovement> {
-    let lines_result = read_file();
+    let lines_result = read_file_multiple_lines("resources/day1Input.txt");
     let mut lock_movements = Vec::new();
     if let Ok(result) = lines_result {
         for line in result {
@@ -36,15 +35,6 @@ fn create_lock_movement(line: &str) -> LockMovement {
     LockMovement { direction, amount }
 }
 
-fn read_file() -> Result<Vec<String>, std::io::Error> {
-    let mut result = Vec::new();
-    let file: File = File::open("resources/day1Input.txt")?;
-    let reader = BufReader::new(file);
-    for line in reader.lines() {
-        result.push(line?);
-    }
-    Ok(result)
-}
 
 #[derive(Debug)]
 enum Direction {

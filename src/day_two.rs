@@ -1,8 +1,7 @@
-use std::fs::File;
-use std::io::{BufRead, BufReader};
+use crate::common::read_file_one_line;
 
-pub fn do_stuff() {
-    let file_content = read_file().unwrap();
+pub fn get_invalids_in_range() {
+    let file_content = read_file_one_line("resources/day2Input.txt").unwrap();
     let range_strings = file_content.split(',');
     let ranges: Vec<IdRange> = range_strings.map(IdRange::from_line).collect();
     let mut sum: u64 = 0;
@@ -14,14 +13,6 @@ pub fn do_stuff() {
         }
     }
     println!("the sum is {}", sum)
-}
-
-fn read_file() -> Result<String, std::io::Error> {
-    let file: File = File::open("resources/day2Input.txt")?;
-    let mut reader = BufReader::new(file);
-    let mut result: String = String::new();
-    reader.read_line(&mut result)?;
-    Ok(result)
 }
 
 struct IdRange {
