@@ -10,7 +10,7 @@ pub fn get_password() {
         lock.apply_movement(&movement, &mut number_of_zeroes);
         // println!("results in {}", lock.state);
     }
-    println!("password = {}", number_of_zeroes);
+    println!("day one answer = {}", number_of_zeroes);
 }
 
 fn get_lock_movements() -> Vec<LockMovement> {

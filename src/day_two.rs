@@ -12,7 +12,7 @@ pub fn get_invalids_in_range() {
             }
         }
     }
-    println!("the sum is {}", sum)
+    println!("day two answer is {}", sum)
 }
 
 struct IdRange {
