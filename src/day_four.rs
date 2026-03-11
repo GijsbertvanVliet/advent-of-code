@@ -33,14 +33,14 @@ impl Grid {
         vector.try_into().unwrap()
     }
 
-    fn print(&self) {
-        for row in self.elements {
-            for char in row {
-                print!("{}", char);
-            }
-            println!();
-        }
-    }
+    // fn print(&self) {
+    //     for row in self.elements {
+    //         for char in row {
+    //             print!("{}", char);
+    //         }
+    //         println!();
+    //     }
+    // }
 
     // Since we want point coordinates to be unsigned, we actually want to start counting from one for once
     fn is_paper_roll(&self, point: &Point) -> bool {
